@@ -55,7 +55,7 @@ class Config:
         self.servers[name] = Server(name, IPAddress, Attributes)
         self.serverips[IPAddress] = 1
 
-    def add_service(name, server, servicetype, port, Attributes=None):
+    def add_service(self, name, server, servicetype, port, Attributes=None):
         ipport_tuple = str(server) + str(port)
         serverisip = False
         try:
@@ -82,7 +82,8 @@ class Config:
     def __str__(self):
         out = ""
         for x in self.servers: out += str(self.servers[x]) + '\n'
-
+        for x in self.services: out += str(self.services[x]) + '\n'
+        for x in self.servicegroups: out += str(self.servicegroups[x]) + '\n'
         for x in self.lbvservers: out += str(self.lbvservers[x]) + '\n'
         for x in self.csvservers: out += str(self.csvservers[x]) + '\n'
 
