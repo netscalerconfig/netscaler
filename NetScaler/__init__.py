@@ -7,3 +7,6 @@ from LBvServer import LBvServer
 from CSvServer import CSvServer
 from CSAction import CSAction
 from CSPolicy import CSPolicy
+from Config import Config
+
+conf = Config()
