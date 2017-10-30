@@ -2,10 +2,10 @@ from AttributeList import AttributeList
 from NSObject import NSObject
 import json
 
-class LBvServer(NSObject):
+class CSvServer(NSObject):
     def __init__(self, name, servicetype, IPAddress, port, Attributes=None):
         self.InitVersion("12.0")
-        self._objecttype = "lbvserver"
+        self._objecttype = "csvserver"
         self.name = name
         self.servicetype = servicetype
         self.ipaddress = IPAddress
@@ -21,70 +21,47 @@ class LBvServer(NSObject):
                 "range": "",
                 "IPPattern": "",
                 "IPMask": "",
+                "targetType": "",
                 "appflowLog": "DISABLED",
                 "Authentication": "OFF",
                 "AuthenticationHost": "",
                 "authn401": "OFF",
                 "authnProfile": "",
                 "authnVs": "",
-                "backupLB": "ROUNDROBIN",
-                "backupPersistence": 0,
                 "backupVServer": "",
-                "bypassAAAA": "NO",
                 "cacheable": "NO",
+                "caseSensitive": "ON",
                 "cltTimeout": 180,
                 "comment": "",
-                "connfailover": "DISABLED",
-                "cookieName": "",
                 "dbProfileName": "",
                 "dbsLb": "DISABLED",
                 "disablePrimaryOnDown": "DISABLED",
-                "dns64": "DISABLED",
                 "dnsProfileName": "",
+                "dnsRecordType": "",
                 "downStateFlush": "ENABLED",
-                "healthThreshold": 0,
                 "httpProfileName": "",
-                "httpsRedirectUrl": "",
                 "icmpVsrResponse": "PASSIVE",
                 "insertVserverIPPort": "OFF",
                 "l2Conn": "OFF",
-                "lbMethod": "LEASTCONNECTION",
-                "lbprofilename": "",
                 "Listenpolicy": "",
                 "Listenpriority": "",
-                "m": "IP",
-                "macmodeRetainvlan": "DISABLED",
-                "maxAutoscaleMembers": 0,
-                "minAutoscaleMembers": 0,
                 "mssqlServerVersion": "",
                 "mysqlCharacterSet": "",
                 "mysqlProtocolVersion": "",
                 "mysqlServerCapabilities": "",
                 "mysqlServerVersion": "",
                 "netProfile": "",
-                "newServiceRequest": 0,
-                "newServiceRequestIncrementInterval": 0,
                 "oracleServerVersion": "",
-                "persistAVPno": 1,
-                "persistenceBackup": "NONE",
-                "persistenceType": "NONE",
-                "persistMask": "",
-                "processLocal": "DISABLED",
+                "persistenceId": "",
+                "presedence": "RULE",
                 "push": "DISABLED",
                 "pushLabel": "",
                 "pushMultiClients": "NO",
                 "pushVserver": "",
-                "RecursionAvailable": "",
-                "redirectFromPort": "",
                 "redirectPortRewrite": "DISABLED",
                 "redirectURL": "",
-                "resRule": "",
-                "retainConnectionsOnCluster": "NO",
                 "RHIstate": "PASSIVE",
                 "rtspNat": "OFF",
-                "rule": "",
-                "sessionless": "DISABLED",
-                "skippersistency": "None",
                 "soBackupAction": "",
                 "soMethod": "NONE",
                 "soPersistence": "DISABLED",
@@ -92,10 +69,7 @@ class LBvServer(NSObject):
                 "soThreshold": 0,
                 "state" : "ENABLED",
                 "tcpProfileName": "",
-                "timeout": 0,
-                "tosId": "",
-                "trofsPersistence": "ENABLED",
-                "v6persistmasklen": "128"
+                "td": 0
                 })
             self.Attributes.comment.setquoted(True)
 
@@ -107,6 +81,6 @@ class LBvServer(NSObject):
         return outstring
 
     def __str__(self):
-        outstring = "add lb vserver " + self.name + " " + self.servicetype + " " + \
+        outstring = "add cs vserver " + self.name + " " + self.servicetype + " " + \
             self.ipaddress + " " + str(self.port) + " " + str(self.Attributes)
         return outstring

@@ -95,6 +95,7 @@ class TestAttribute(unittest.TestCase):
                 "soPersistence": "ENABLED",
                 "soPersistenceTimeOut": 1,
                 "soThreshold": 1,
+                "state" : "DISABLED",
                 "tcpProfileName": "asdf",
                 "timeout": 1,
                 "tosId": "asdf",
@@ -103,23 +104,23 @@ class TestAttribute(unittest.TestCase):
             })
 
         expectedout = 'add lb vserver {} {} {} {} '.format(lbname, servicetype, ipaddress, port) + \
-        '-comment "This is a comment" -mysqlServerVersion asdf ' + \
-        '-newServiceRequestIncrementInterval 1 -icmpVsrResponse ACTIVE -persistenceBackup SOURCEIP ' + \
-        '-mysqlCharacterSet asdf -processLocal ENABLED -soBackupAction asdf -cookieName adsf -authn401 ON ' + \
-        '-soPersistenceTimeOut 1 -Authentication ON -healthThreshold 1 -soMethod OTHER -oracleServerVersion asdf ' + \
-        '-tosId asdf -persistAVPno 2 -insertVserverIPPort ON -connfailover ENABLED -minAutoscaleMembers 1 ' + \
-        '-cacheable YES -authnVs asdf -disablePrimaryOnDown ENABLED -redirectPortRewrite ENABLED -rtspNat ON ' + \
-        '-backupLB LEASTCONNECTION -mssqlServerVersion asdf -lbMethod ROUNDROBIN -macmodeRetainvlan ENABLED ' + \
-        '-RHIstate ACTIVE -redirectURL asdf -lbprofilename asdf -RecursionAvailable asdf -httpProfileName asdf ' + \
-        '-cltTimeout 181 -dnsProfileName asdf -IPMask adsf -persistenceType COOKIEINSERT -maxAutoscaleMembers 1 ' + \
-        '-l2Conn ON -IPPattern asdf -dns64 ENABLED -skippersistency Other -bypassAAAA YES -Listenpriority asdf ' + \
-        '-pushVserver asdf -dbProfileName asdf -persistMask asdf -netProfile asdf -pushMultiClients YES ' + \
-        '-pushLabel asdf -sessionless ENABLED -trofsPersistence DISABLED -resRule asdf -AuthenticationHost asdf ' + \
-        '-redirectFromPort asdf -soThreshold 1 -mysqlServerCapabilities asdf -soPersistence ENABLED ' + \
-        '-appflowLog ENABLED -retainConnectionsOnCluster YES -rule asdf -httpsRedirectUrl asdf ' + \
-        '-tcpProfileName asdf -m OTHER -mysqlProtocolVersion asdf -backupPersistence 10 -range adsf ' + \
-        '-backupVServer ASDF -dbsLb ENABLED -Listenpolicy asdf -timeout 1 -newServiceRequest 1 -push ENABLED ' + \
-        '-v6persistmasklen 127 -authnProfile asdf -downStateFlush DISABLED '
+            '-comment "This is a comment" -mysqlServerVersion asdf -newServiceRequestIncrementInterval 1 ' + \
+            '-icmpVsrResponse ACTIVE -persistenceBackup SOURCEIP -mysqlCharacterSet asdf -processLocal ENABLED ' + \
+            '-soBackupAction asdf -cookieName adsf -authn401 ON -soPersistenceTimeOut 1 -Authentication ON ' + \
+            '-healthThreshold 1 -soMethod OTHER -oracleServerVersion asdf -tosId asdf -persistAVPno 2 ' + \
+            '-insertVserverIPPort ON -connfailover ENABLED -minAutoscaleMembers 1 -cacheable YES -authnVs asdf ' + \
+            '-disablePrimaryOnDown ENABLED -redirectPortRewrite ENABLED -rtspNat ON -backupLB LEASTCONNECTION ' + \
+            '-mssqlServerVersion asdf -lbMethod ROUNDROBIN -macmodeRetainvlan ENABLED -state DISABLED ' + \
+            '-RHIstate ACTIVE -redirectURL asdf -lbprofilename asdf -RecursionAvailable asdf -httpProfileName asdf ' + \
+            '-cltTimeout 181 -dnsProfileName asdf -IPMask adsf -persistenceType COOKIEINSERT -maxAutoscaleMembers 1 ' + \
+            '-l2Conn ON -IPPattern asdf -dns64 ENABLED -skippersistency Other -bypassAAAA YES -Listenpriority asdf ' + \
+            '-pushVserver asdf -dbProfileName asdf -persistMask asdf -netProfile asdf -pushMultiClients YES ' + \
+            '-pushLabel asdf -sessionless ENABLED -trofsPersistence DISABLED -resRule asdf -AuthenticationHost asdf ' + \
+            '-redirectFromPort asdf -soThreshold 1 -mysqlServerCapabilities asdf -soPersistence ENABLED ' + \
+            '-appflowLog ENABLED -retainConnectionsOnCluster YES -rule asdf -httpsRedirectUrl asdf -tcpProfileName asdf ' + \
+            '-m OTHER -mysqlProtocolVersion asdf -backupPersistence 10 -range adsf -backupVServer ASDF -dbsLb ENABLED ' + \
+            '-Listenpolicy asdf -timeout 1 -newServiceRequest 1 -push ENABLED -v6persistmasklen 127 -authnProfile asdf ' + \
+            '-downStateFlush DISABLED '
         self.assertEqual(str(orig), expectedout)
 
     def test_03_Repr(self):
@@ -243,6 +244,7 @@ class TestAttribute(unittest.TestCase):
             '"mssqlServerVersion": {\'default_value\': \'\', \'changed\': True, \'quoted\': False, \'key\': \'mssqlServerVersion\', \'val\': \'asdf\'}, ' + \
             '"lbMethod": {\'default_value\': \'LEASTCONNECTION\', \'changed\': True, \'quoted\': False, \'key\': \'lbMethod\', \'val\': \'ROUNDROBIN\'}, ' + \
             '"macmodeRetainvlan": {\'default_value\': \'DISABLED\', \'changed\': True, \'quoted\': False, \'key\': \'macmodeRetainvlan\', \'val\': \'ENABLED\'}, ' + \
+            '"state": {\'default_value\': \'ENABLED\', \'changed\': False, \'quoted\': False, \'key\': \'state\', \'val\': \'ENABLED\'}, ' + \
             '"RHIstate": {\'default_value\': \'PASSIVE\', \'changed\': True, \'quoted\': False, \'key\': \'RHIstate\', \'val\': \'ACTIVE\'}, ' + \
             '"redirectURL": {\'default_value\': \'\', \'changed\': True, \'quoted\': False, \'key\': \'redirectURL\', \'val\': \'asdf\'}, ' + \
             '"lbprofilename": {\'default_value\': \'\', \'changed\': True, \'quoted\': False, \'key\': \'lbprofilename\', \'val\': \'asdf\'}, ' + \
