@@ -8,6 +8,7 @@ class ServiceGroup(NSObject):
         self._objecttype = "servicegroup"
         self.name = name
         self.servicetype = servicetype
+        self.server_bind = {}
         if Attributes is not None:
             for x in Attributes:
                 self.Attributes[x] = Attributes[x]
@@ -57,4 +58,6 @@ class ServiceGroup(NSObject):
     def __str__(self):
         outstring = "add servicegroup " + self.name + " " + \
             self.servicetype + " " + str(self.Attributes)
+        for x in self.server_bind:
+            outstring += '\n' + str(self.server_bind[x])
         return outstring
