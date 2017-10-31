@@ -10,6 +10,9 @@ class LBvServer(NSObject):
         self.servicetype = servicetype
         self.ipaddress = IPAddress
         self.port = port
+        self.svc_bind = {} # service and service groups
+        self.rsp_bind = {}
+        self.rwp_bind = {}
         if Attributes is not None:
             for x in Attributes:
                 self.Attributes[x] = Attributes[x]
@@ -109,4 +112,7 @@ class LBvServer(NSObject):
     def __str__(self):
         outstring = "add lb vserver " + self.name + " " + self.servicetype + " " + \
             self.ipaddress + " " + str(self.port) + " " + str(self.Attributes)
+        for x in self.svc_bind:
+            outstring += '\n'
+            outstring += str(self.svc_bind[x])
         return outstring
