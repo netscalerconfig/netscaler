@@ -4,7 +4,7 @@ When loaded, this librar will offer access to a class that allows creation of Ne
 
 The offered functions are:
 
-* NetScaler.add_lb_vserver(name, servicetype, IPAddress, port, Attributes)
+* NetScaler.add_lb_vserver(name, servicetype, IPAddress, port, Attributes)<br>
     Will create a LB vServer of type "servicetype" using IPAddress and Port. 
     ServiceType must match one of NetScaler's types. Please refer to NetScaler documentation
     This library will check that the IPAddress and port tuple is not used in the same config before. If so, it will generate an exception.
