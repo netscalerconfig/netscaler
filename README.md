@@ -2,6 +2,14 @@
 
 When loaded, this librar will offer access to a class that allows creation of NetScaler config files. This library will validate most configurations before generating the config file.
 
+Library must be loaded by using:
+
+_import NetScaler_
+
+The object can be generated using the following command:
+
+_nsconfig = NetScaler.NewConfig()_
+
 ## Functions
 
 * _NetScaler.add_lb_vserver(name, servicetype, IPAddress, port, Attributes)_
