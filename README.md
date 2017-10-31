@@ -90,62 +90,63 @@ When loaded, this librar will offer access to a class that allows creation of Ne
         * trofsPersistence
         * v6persistmasklen
 
-* NetScaler.add_cs_vserver(name, servicetype, IPAddress, port, Attributes)
+* _NetScaler.add_cs_vserver(name, servicetype, IPAddress, port, Attributes)_
 
     Will create a CS vServer of type "servicetype" using IPAddress and Port. ServiceType must match one of NetScaler's types. Please refer to NetScaler documentation. This library will check that the IPAddress and port tuple is not used in the same config before. If so, it will generate an exception.
     The accepted attributes are based on NetScaler firmware version 12.0. Attributes accepted must be of the form of a Dictionary and the keys are case sensitive. For documentation of each attribute please use NetScaler documentation. The list of accepted keys is:
-        range
-        IPPattern
-        IPMask
-        targetType
-        appflowLog
-        Authentication
-        AuthenticationHost
-        authn401
-        authnProfile
-        authnVs
-        backupVServer
-        cacheable
-        caseSensitive
-        cltTimeout
-        comment
-        dbProfileName
-        dbsLb
-        disablePrimaryOnDown
-        dnsProfileName
-        dnsRecordType
-        downStateFlush
-        httpProfileName
-        icmpVsrResponse
-        insertVserverIPPort
-        l2Conn
-        Listenpolicy
-        Listenpriority
-        mssqlServerVersion
-        mysqlCharacterSet
-        mysqlProtocolVersion
-        mysqlServerCapabilities
-        mysqlServerVersion
-        netProfile
-        oracleServerVersion
-        persistenceId
-        presedence
-        push
-        pushLabel
-        pushMultiClients
-        pushVserver
-        redirectPortRewrite
-        redirectURL
-        RHIstate
-        rtspNat
-        soBackupAction
-        soMethod
-        soPersistence
-        soPersistenceTimeOut
-        soThreshold
-        state
-        tcpProfileName
-        td
+
+        * range
+        * IPPattern
+        * IPMask
+        * targetType
+        * appflowLog
+        * Authentication
+        * AuthenticationHost
+        * authn401
+        * authnProfile
+        * authnVs
+        * backupVServer
+        * cacheable
+        * caseSensitive
+        * cltTimeout
+        * comment
+        * dbProfileName
+        * dbsLb
+        * disablePrimaryOnDown
+        * dnsProfileName
+        * dnsRecordType
+        * downStateFlush
+        * httpProfileName
+        * icmpVsrResponse
+        * insertVserverIPPort
+        * l2Conn
+        * Listenpolicy
+        * Listenpriority
+        * mssqlServerVersion
+        * mysqlCharacterSet
+        * mysqlProtocolVersion
+        * mysqlServerCapabilities
+        * mysqlServerVersion
+        * netProfile
+        * oracleServerVersion
+        * persistenceId
+        * presedence
+        * push
+        * pushLabel
+        * pushMultiClients
+        * pushVserver
+        * redirectPortRewrite
+        * redirectURL
+        * RHIstate
+        * rtspNat
+        * soBackupAction
+        * soMethod
+        * soPersistence
+        * soPersistenceTimeOut
+        * soThreshold
+        * state
+        * tcpProfileName
+        * td
 
 * NetScaler.add_server(name, IPAddress, Attributes)
     Will create a server. Checks of duplicate IP addresses will be done before registering the object in the config.
