@@ -83,6 +83,10 @@ class Config:
     def add_cs_action(self, name, Attributes=None):
         if name in self.csactions:
             raise KeyError, "Duplicate name of cs action"
+        if 'targetlbVserver' in Attributes:
+            if Attributes['targetlbVserver'] not in self.lbvservers:
+                raise KeyError, "Target LB vServer doesn't exist"
+
         self.csactions[name] = CSAction(name, Attributes)
 
     def add_cs_policy(self, name, Attributes=None):
@@ -129,6 +133,14 @@ class Config:
         self.servicegroups[sg_name].server_bind[srv_name] = \
             Bind(self.servicegroups[sg_name], self.servers[srv_name], 'sgs', Attributes, port)
 
+    def bind_cs_lbvserver(self, cs_name, lb_name, Attributes=None):
+        if cs_name not in self.csvservers:
+            raise KeyError, "Content Swith vServer doesn't exist"
+        if lb_name not in self.lbvservers:
+            raise KeyError, "LB vServer doesn't exist"
+
+        self.csvservers[cs_name].setCSDefault( \
+            Bind(self.csvservers[cs_name], self.lbvservers[lb_name], 'clb', Attributes))
 
     def __str__(self):
         out = ""
