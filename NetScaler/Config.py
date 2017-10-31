@@ -5,6 +5,7 @@ from LBvServer import LBvServer
 from CSvServer import CSvServer
 from CSAction import CSAction
 from CSPolicy import CSPolicy
+from Bind import Bind
 import socket
 
 class Config:
@@ -57,12 +58,7 @@ class Config:
 
     def add_service(self, name, server, servicetype, port, Attributes=None):
         ipport_tuple = str(server) + str(port)
-        serverisip = False
-        try:
-            socket.inet_aton(server)
-            serverisip = True
-        except socket.error:
-            serverisip = False
+        serverisip = self.is_ip(server)
 
         if serverisip and server not in self.serverips:
             self.servers[server] = Server(server, server)
@@ -92,7 +88,47 @@ class Config:
     def add_cs_policy(self, name, Attributes=None):
         if name in self.cspolicies:
             raise KeyError, "Duplicate name of cs policy"
+        if 'action' in Attributes and Attributes['action'] not in self.csactions:
+            raise KeyError, "Action doesn't exist"
         self.cspolicies[name] = CSPolicy(name, Attributes)
+
+    def bind_lbvserver_service(self, lb_name, svc_name, Attributes=None):
+        if lb_name not in self.lbvservers:
+            raise KeyError, "Load Balancing vServer doesn't exist"
+        if svc_name not in self.services:
+            raise KeyError, "Service doesn't exist"
+        if svc_name in self.lbvservers[lb_name].svc_bind:
+            raise KeyError, "Service already bound"
+
+        self.lbvservers[lb_name].svc_bind[svc_name] = \
+            Bind(self.lbvservers[lb_name], self.services[svc_name], 'lsv', Attributes)
+
+    def bind_lbvserver_servicegroup(self, lb_name, sg_name, Attributes=None):
+        if lb_name not in self.lbvservers:
+            raise KeyError, "Load Balancing vServer doesn't exist"
+        if sg_name not in self.servicegroups:
+            raise KeyError, "ServiceGroup doesn't exist"
+        if sg_name in self.lbvservers[lb_name].svc_bind:
+            raise KeyError, "ServiceGroup already bound"
+
+        self.lbvservers[lb_name].svc_bind[sg_name] = \
+            Bind(self.lbvservers[lb_name], self.servicegroups[sg_name], 'lsv', Attributes)
+
+    def bind_servicegroup_server(self, sg_name, srv_name, port, Attributes=None):
+        serverisip = self.is_ip(srv_name)
+        if sg_name not in self.servicegroups:
+            raise KeyError, "ServiceGroup doesn't exist"
+        if serverisip:
+            if srv_name not in self.serverips:
+                self.add_server(srv_name, srv_name)
+            elif srv_name not in self.servers:
+                raise KeyError, "Server already exists with a name"
+        else:
+            if srv_name not in self.servers:
+                raise KeyError, "Server doesn't exist"
+        self.servicegroups[sg_name].server_bind[srv_name] = \
+            Bind(self.servicegroups[sg_name], self.servers[srv_name], 'sgs', Attributes, port)
+
 
     def __str__(self):
         out = ""
@@ -105,3 +141,10 @@ class Config:
         for x in self.csvservers: out += str(self.csvservers[x]) + '\n'
 
         return out
+
+    def is_ip(self, str):
+        try:
+            socket.inet_aton(str)
+            return True
+        except socket.error:
+            return False
