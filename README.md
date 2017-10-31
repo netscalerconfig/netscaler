@@ -10,6 +10,7 @@ When loaded, this librar will offer access to a class that allows creation of Ne
     ServiceType must match one of NetScaler's types. Please refer to NetScaler documentation
     This library will check that the IPAddress and port tuple is not used in the same config before. If so, it will generate an exception.
     The accepted attributes are based on NetScaler firmware version 12.0. Attributes accepted must be of the form of a Dictionary and the keys are case sensitive. For documentation of each attribute please use NetScaler documentation. The list of accepted keys is:
+
         * range
         * IPPattern
         * IPMask
