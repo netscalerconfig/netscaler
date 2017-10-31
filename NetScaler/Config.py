@@ -84,12 +84,24 @@ class Config:
             raise KeyError, "Duplicate name of service"
         self.servicegroups[name] = ServiceGroup(name, servicetype, Attributes)
 
+    def add_cs_action(self, name, Attributes=None):
+        if name in self.csactions:
+            raise KeyError, "Duplicate name of cs action"
+        self.csactions[name] = CSAction(name, Attributes)
+
+    def add_cs_policy(self, name, Attributes=None):
+        if name in self.cspolicies:
+            raise KeyError, "Duplicate name of cs policy"
+        self.cspolicies[name] = CSPolicy(name, Attributes)
+
     def __str__(self):
         out = ""
         for x in self.servers: out += str(self.servers[x]) + '\n'
         for x in self.services: out += str(self.services[x]) + '\n'
         for x in self.servicegroups: out += str(self.servicegroups[x]) + '\n'
         for x in self.lbvservers: out += str(self.lbvservers[x]) + '\n'
+        for x in self.csactions: out += str(self.csactions[x]) + '\n'
+        for x in self.cspolicies: out += str(self.cspolicies[x]) + '\n'
         for x in self.csvservers: out += str(self.csvservers[x]) + '\n'
 
         return out
