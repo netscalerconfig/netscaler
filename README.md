@@ -5,90 +5,92 @@ When loaded, this librar will offer access to a class that allows creation of Ne
 ## Functions
 
 * _NetScaler.add_lb_vserver(name, servicetype, IPAddress, port, Attributes)_
+
     Will create a LB vServer of type "servicetype" using IPAddress and Port. 
     ServiceType must match one of NetScaler's types. Please refer to NetScaler documentation
     This library will check that the IPAddress and port tuple is not used in the same config before. If so, it will generate an exception.
     The accepted attributes are based on NetScaler firmware version 12.0. Attributes accepted must be of the form of a Dictionary and the keys are case sensitive. For documentation of each attribute please use NetScaler documentation. The list of accepted keys is:
-        range
-        IPPattern
-        IPMask
-        appflowLog
-        Authentication
-        AuthenticationHost
-        authn401
-        authnProfile
-        authnVs
-        backupLB
-        backupPersistence
-        backupVServer
-        bypassAAAA
-        cacheable
-        cltTimeout
-        comment
-        connfailover
-        cookieName
-        dbProfileName
-        dbsLb
-        disablePrimaryOnDown
-        dns64
-        dnsProfileName
-        downStateFlush
-        healthThreshold
-        httpProfileName
-        httpsRedirectUrl
-        icmpVsrResponse
-        insertVserverIPPort
-        l2Conn
-        lbMethod
-        lbprofilename
-        Listenpolicy
-        Listenpriority
-        m
-        macmodeRetainvlan
-        maxAutoscaleMembers
-        minAutoscaleMembers
-        mssqlServerVersion
-        mysqlCharacterSet
-        mysqlProtocolVersion
-        mysqlServerCapabilities
-        mysqlServerVersion
-        netProfile
-        newServiceRequest
-        newServiceRequestIncrementInterval
-        oracleServerVersion
-        persistAVPno
-        persistenceBackup
-        persistenceType
-        persistMask
-        processLocal
-        push
-        pushLabel
-        pushMultiClients
-        pushVserver
-        RecursionAvailable
-        redirectFromPort
-        redirectPortRewrite
-        redirectURL
-        resRule
-        retainConnectionsOnCluster
-        RHIstate
-        rtspNat
-        rule
-        sessionless
-        skippersistency
-        soBackupAction
-        soMethod
-        soPersistence
-        soPersistenceTimeOut
-        soThreshold
-        state"
-        tcpProfileName
-        timeout
-        tosId
-        trofsPersistence
-        v6persistmasklen
+        * range
+        * IPPattern
+        * IPMask
+        * appflowLog
+        * Authentication
+        * AuthenticationHost
+        * authn401
+        * authnProfile
+        * authnVs
+        * backupLB
+        * backupPersistence
+        * backupVServer
+        * bypassAAAA
+        * cacheable
+        * cltTimeout
+        * comment
+        * connfailover
+        * cookieName
+        * dbProfileName
+        * dbsLb
+        * disablePrimaryOnDown
+        * dns64
+        * dnsProfileName
+        * downStateFlush
+        * healthThreshold
+        * httpProfileName
+        * httpsRedirectUrl
+        * icmpVsrResponse
+        * insertVserverIPPort
+        * l2Conn
+        * lbMethod
+        * lbprofilename
+        * Listenpolicy
+        * Listenpriority
+        * m
+        * macmodeRetainvlan
+        * maxAutoscaleMembers
+        * minAutoscaleMembers
+        * mssqlServerVersion
+        * mysqlCharacterSet
+        * mysqlProtocolVersion
+        * mysqlServerCapabilities
+        * mysqlServerVersion
+        * netProfile
+        * newServiceRequest
+        * newServiceRequestIncrementInterval
+        * oracleServerVersion
+        * persistAVPno
+        * persistenceBackup
+        * persistenceType
+        * persistMask
+        * processLocal
+        * push
+        * pushLabel
+        * pushMultiClients
+        * pushVserver
+        * RecursionAvailable
+        * redirectFromPort
+        * redirectPortRewrite
+        * redirectURL
+        * resRule
+        * retainConnectionsOnCluster
+        * RHIstate
+        * rtspNat
+        * rule
+        * sessionless
+        * skippersistency
+        * soBackupAction
+        * soMethod
+        * soPersistence
+        * soPersistenceTimeOut
+        * soThreshold
+        * state"
+        * tcpProfileName
+        * timeout
+        * tosId
+        * trofsPersistence
+        * v6persistmasklen
 
 * NetScaler.add_cs_vserver(name, servicetype, IPAddress, port, Attributes)
+
     Will create a CS vServer of type "servicetype" using IPAddress and Port. ServiceType must match one of NetScaler's types. Please refer to NetScaler documentation. This library will check that the IPAddress and port tuple is not used in the same config before. If so, it will generate an exception.
     The accepted attributes are based on NetScaler firmware version 12.0. Attributes accepted must be of the form of a Dictionary and the keys are case sensitive. For documentation of each attribute please use NetScaler documentation. The list of accepted keys is:
         range
