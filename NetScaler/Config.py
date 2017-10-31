@@ -83,8 +83,8 @@ class Config:
     def add_cs_action(self, name, Attributes=None):
         if name in self.csactions:
             raise KeyError, "Duplicate name of cs action"
-        if 'targetlbVserver' in Attributes:
-            if Attributes['targetlbVserver'] not in self.lbvservers:
+        if Attributes is not None and 'targetLBVserver' in Attributes:
+            if Attributes['targetLBVserver'] not in self.lbvservers:
                 raise KeyError, "Target LB vServer doesn't exist"
 
         self.csactions[name] = CSAction(name, Attributes)
@@ -92,6 +92,8 @@ class Config:
     def add_cs_policy(self, name, Attributes=None):
         if name in self.cspolicies:
             raise KeyError, "Duplicate name of cs policy"
+        if 'domain' not in Attributes and 'url' not in Attributes and 'rule' not in Attributes:
+            raise KeyError, "Too few arguments"
         if 'action' in Attributes and Attributes['action'] not in self.csactions:
             raise KeyError, "Action doesn't exist"
         self.cspolicies[name] = CSPolicy(name, Attributes)
@@ -141,6 +143,17 @@ class Config:
 
         self.csvservers[cs_name].setCSDefault( \
             Bind(self.csvservers[cs_name], self.lbvservers[lb_name], 'clb', Attributes))
+
+    def bind_cs_cspolicy(self, cs_name, cspol_name, Attributes=None):
+        if cs_name not in self.csvservers:
+            raise KeyError, "Content Swith vServer doesn't exist"
+        if cspol_name not in self.cspolicies:
+            raise KeyError, "CS Policy doesn't exist"
+        if 'priority' not in Attributes:
+            raise KeyError, "Priority is mandatory for advanced expressions"
+
+        self.csvservers[cs_name].csp_bind[Attributes['priority']] = \
+            Bind(self.csvservers[cs_name], self.cspolicies[cspol_name], 'csp', Attributes)
 
     def __str__(self):
         out = ""
