@@ -10,6 +10,10 @@ class CSvServer(NSObject):
         self.servicetype = servicetype
         self.ipaddress = IPAddress
         self.port = port
+        self.csdefault = None
+        self.csp_bind = {} # service and service groups
+        self.rsp_bind = {}
+        self.rwp_bind = {}
         if Attributes is not None:
             for x in Attributes:
                 self.Attributes[x] = Attributes[x]
@@ -80,7 +84,12 @@ class CSvServer(NSObject):
         outstring += " \"port\": {}, ".format(json.dumps(self.port))
         return outstring
 
+    def setCSDefault(self, vs):
+        self.__dict__['csdefault'] = vs
+
     def __str__(self):
         outstring = "add cs vserver " + self.name + " " + self.servicetype + " " + \
             self.ipaddress + " " + str(self.port) + " " + str(self.Attributes)
+        if self.csdefault is not None:
+            outstring += '\n' + str(self.csdefault)
         return outstring
