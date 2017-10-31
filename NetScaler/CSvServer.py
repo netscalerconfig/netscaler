@@ -92,4 +92,6 @@ class CSvServer(NSObject):
             self.ipaddress + " " + str(self.port) + " " + str(self.Attributes)
         if self.csdefault is not None:
             outstring += '\n' + str(self.csdefault)
+        for x in self.csp_bind:
+            outstring += '\n' + str(self.csp_bind[x])
         return outstring
