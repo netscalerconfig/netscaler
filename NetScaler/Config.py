@@ -45,7 +45,6 @@ class Config:
 
         self.csvservers[name] = CSvServer(name, servicetype, IPAddress, port, Attributes)
         self.vsipport_tuples[ipport_tuple] = 1
-        self.vsipport_tuples[ipport_tuple] = 1
         self.vservernames[name] = 1
 
     def add_server(self, name, IPAddress, Attributes=None):
