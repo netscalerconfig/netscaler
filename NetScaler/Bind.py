@@ -50,8 +50,7 @@ class Bind(NSObject):
                     'targetLBVserver': '',
                     'priority': '',
                     'gotoPriorityExpression': '',
-                    'invoke': '',
-                    'type': ''
+                    'invoke': ''
                 },
                 'rsp': {
                     'priority': '',
