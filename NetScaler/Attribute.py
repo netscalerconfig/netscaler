@@ -1,16 +1,20 @@
 import json
 
 class Attribute:
-    def __init__(self, key, default_value, quoted=False):
+    def __init__(self, key, default_value, quoted=False, expr=False):
         self.key = key
         self.default_value = default_value
         self.changed = False
         self.val = default_value
         self.quoted = quoted
+        self.expr = expr
         self._locked = True
 
     def setquoted(self, q):
         self.__dict__['quoted'] = q
+
+    def setexpr(self, e):
+        self.__dict__['expr'] = e
 
     def __setattr__(self, name, value):
         if self.__dict__.get('_locked'):
@@ -25,6 +29,7 @@ class Attribute:
     def __str__(self):
         if self.changed:
             if self.quoted: val = json.dumps(self.val)
+            elif self.expr: val = "q^ " + self.val + " ^"
             else: val = self.val
             return "-{} {} ".format(self.key, val)
         return ""
