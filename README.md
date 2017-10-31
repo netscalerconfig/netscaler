@@ -2,9 +2,9 @@
 
 When loaded, this librar will offer access to a class that allows creation of NetScaler config files. This library will validate most configurations before generating the config file.
 
-The offered functions are:
+## Functions
 
-* NetScaler.add_lb_vserver(name, servicetype, IPAddress, port, Attributes)<br>
+* _NetScaler.add_lb_vserver(name, servicetype, IPAddress, port, Attributes)_
     Will create a LB vServer of type "servicetype" using IPAddress and Port. 
     ServiceType must match one of NetScaler's types. Please refer to NetScaler documentation
     This library will check that the IPAddress and port tuple is not used in the same config before. If so, it will generate an exception.
