@@ -79,6 +79,11 @@ class Config:
         self.services[name] = Service(name, server, servicetype, port, Attributes)
         self.svcipport_tuples[ipport_tuple] = 1
 
+    def add_servicegroup(self, name, servicetype, Attributes=None):
+        if name in self.servicegroups or name in self.services:
+            raise KeyError, "Duplicate name of service"
+        self.servicegroups[name] = ServiceGroup(name, servicetype, Attributes)
+
     def __str__(self):
         out = ""
         for x in self.servers: out += str(self.servers[x]) + '\n'
