@@ -10,3 +10,6 @@ from CSPolicy import CSPolicy
 from Config import Config
 
 conf = Config()
+
+def NewConfig():
+    return Config()
