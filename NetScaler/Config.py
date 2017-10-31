@@ -31,7 +31,8 @@ class Config:
             raise KeyError, "IP and Port already in use"
 
         self.lbvservers[name] = LBvServer(name, servicetype, IPAddress, port, Attributes)
-        self.vsipport_tuples[ipport_tuple] = 1
+        if IPAddress != '0.0.0.0' and str(port) != '0':
+            self.vsipport_tuples[ipport_tuple] = 1
         self.vservernames[name] = 1
 
     def add_cs_vserver(self, name, servicetype, IPAddress, port, Attributes=None):
