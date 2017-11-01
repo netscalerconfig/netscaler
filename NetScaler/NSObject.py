@@ -29,3 +29,10 @@ class NSObject:
 
     def LocalAttributes():
         return ""
+
+    def is_ip(self, str):
+        try:
+            socket.inet_aton(str)
+            return True
+        except socket.error:
+            return False
