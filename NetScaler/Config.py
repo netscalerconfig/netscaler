@@ -9,6 +9,7 @@ from CSPolicy import CSPolicy
 from LDAPAction import LDAPAction
 from RadiusAction import RadiusAction
 from TacacsAction import TacacsAction
+from CertAction import CertAction
 from Bind import Bind
 import socket
 
@@ -29,6 +30,7 @@ class Config:
         self.ldapactions = {}
         self.radiusactions = {}
         self.tacacsactions = {}
+        self.certactions = {}
 
     def add_lb_vserver(self, name, servicetype, IPAddress, port, Attributes=None):
         ipport_tuple = str(IPAddress) + str(port)
@@ -194,11 +196,18 @@ class Config:
 
         self.tacacsactions[name] = TacacsAction(name, server, tacacssecret, Attributes)
 
+    def add_auth_certaction(self, name, Attributes=None):
+        if name in self.certactions:
+            raise KeyError, "Dumplicate name of certAction"
+
+        self.certactions[name] = CertAction(name, Attributes)
+
     def __str__(self):
         out = ""
         for x in self.ldapactions: out += str(self.ldapactions[x]) + '\n'
         for x in self.radiusactions: out += str(self.radiusactions[x]) + '\n'
         for x in self.tacacsactions: out += str(self.tacacsactions[x]) + '\n'
+        for x in self.certactions: out += str(self.certactions[x]) + '\n'
         for x in self.servers: out += str(self.servers[x]) + '\n'
         for x in self.services: out += str(self.services[x]) + '\n'
         for x in self.servicegroups: out += str(self.servicegroups[x]) + '\n'
