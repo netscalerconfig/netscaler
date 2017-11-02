@@ -12,6 +12,7 @@ from LDAPAction import LDAPAction
 from RadiusAction import RadiusAction
 from TacacsAction import TacacsAction
 from CertAction import CertAction
+from Policy import Policy
 from Config import Config
 
 conf = Config()
