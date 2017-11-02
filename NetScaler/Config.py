@@ -10,11 +10,13 @@ from LDAPAction import LDAPAction
 from RadiusAction import RadiusAction
 from TacacsAction import TacacsAction
 from CertAction import CertAction
+from Policy import Policy
 from Bind import Bind
 import socket
 
 class Config:
     def __init__(self):
+        self._version = '12.0'
         self.servers = {}
         self.services = {}
         self.servicegroups = {}
@@ -31,6 +33,10 @@ class Config:
         self.radiusactions = {}
         self.tacacsactions = {}
         self.certactions = {}
+        self.certpolicies = {}
+        self.tacacspolicies = {}
+        self.radiuspolicies = {}
+        self.ldappolicies = {}
 
     def add_lb_vserver(self, name, servicetype, IPAddress, port, Attributes=None):
         ipport_tuple = str(IPAddress) + str(port)
@@ -200,7 +206,47 @@ class Config:
         if name in self.certactions:
             raise KeyError, "Dumplicate name of certAction"
 
-        self.certactions[name] = CertAction(name, Attributes)
+        self.certactions[name] = CertAction(name, Attributes, self._version)
+
+    def add_auth_certpolicy(self, name, Attributes=None):
+        if 'rule' not in Attributes:
+            raise KeyError, "Rule is required"
+        if 'action' not in Attributes:
+            raise KeyError, "Action is required"
+        if Attributes['action'] not in self.certactions:
+            raise KeyError, "Action doesn't exist"
+
+        self.certpolicies[name] = Policy(name, 'certpolicy', Attributes, self._version)
+
+    def add_auth_tacacspolicy(self, name, Attributes=None):
+        if 'rule' not in Attributes:
+            raise KeyError, "Rule is required"
+        if 'action' not in Attributes:
+            raise KeyError, "Action is required"
+        if Attributes['action'] not in self.tacacsactions:
+            raise KeyError, "Action doesn't exist"
+
+        self.tacacspolicies[name] = Policy(name, 'tacacspolicy', Attributes, self._version)
+
+    def add_auth_radiuspolicy(self, name, Attributes=None):
+        if 'rule' not in Attributes:
+            raise KeyError, "Rule is required"
+        if 'action' not in Attributes:
+            raise KeyError, "Action is required"
+        if Attributes['action'] not in self.radiusactions:
+            raise KeyError, "Action doesn't exist"
+
+        self.radiuspolicies[name] = Policy(name, 'radiuspolicy', Attributes, self._version)
+
+    def add_auth_ldappolicy(self, name, Attributes=None):
+        if 'rule' not in Attributes:
+            raise KeyError, "Rule is required"
+        if 'action' not in Attributes:
+            raise KeyError, "Action is required"
+        if Attributes['action'] not in self.ldapactions:
+            raise KeyError, "Action doesn't exist"
+
+        self.ldappolicies[name] = Policy(name, 'ldappolicy', Attributes, self._version)
 
     def __str__(self):
         out = ""
@@ -208,6 +254,10 @@ class Config:
         for x in self.radiusactions: out += str(self.radiusactions[x]) + '\n'
         for x in self.tacacsactions: out += str(self.tacacsactions[x]) + '\n'
         for x in self.certactions: out += str(self.certactions[x]) + '\n'
+        for x in self.certpolicies: out += str(self.certpolicies[x]) + '\n'
+        for x in self.tacacspolicies: out += str(self.tacacspolicies[x]) + '\n'
+        for x in self.radiuspolicies: out += str(self.radiuspolicies[x]) + '\n'
+        for x in self.ldappolicies: out += str(self.ldappolicies[x]) + '\n'
         for x in self.servers: out += str(self.servers[x]) + '\n'
         for x in self.services: out += str(self.services[x]) + '\n'
         for x in self.servicegroups: out += str(self.servicegroups[x]) + '\n'
