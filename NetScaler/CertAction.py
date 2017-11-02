@@ -1,11 +1,14 @@
 from AttributeList import AttributeList
 from NSObject import NSObject
 import json
-import socket
 
 class CertAction(NSObject):
-    def __init__(self, name, Attributes=None):
-        self.InitVersion("12.0")
+    def __init__(self, name, Attributes=None, version=None):
+        if version is None:
+            self._version = '12.0'
+        else:
+            self._version = version
+        self.InitVersion()
         self._objecttype = "certAction"
         self.name = name
         if Attributes is not None:
@@ -13,8 +16,8 @@ class CertAction(NSObject):
                 self.Attributes[x] = Attributes[x]
         self._locked = True
 
-    def InitVersion(self, version):
-        if version == '12.0':
+    def InitVersion(self):
+        if self._version == '12.0':
             self.__dict__['Attributes'] = AttributeList({
                 "defaultAuthenticationGroup": "",
                 "groupNameField": "",
