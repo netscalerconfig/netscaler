@@ -5,7 +5,6 @@ from LBvServer import LBvServer
 from CSvServer import CSvServer
 from VPNvServer import VPNvServer
 from CSAction import CSAction
-from CSPolicy import CSPolicy
 from LDAPAction import LDAPAction
 from RadiusAction import RadiusAction
 from TacacsAction import TacacsAction
@@ -125,7 +124,7 @@ class Config:
             raise KeyError, "Too few arguments"
         if 'action' in Attributes and Attributes['action'] not in self.csactions:
             raise KeyError, "Action doesn't exist"
-        self.cspolicies[name] = CSPolicy(name, Attributes)
+        self.cspolicies[name] = Policy(name, 'cspolicy', Attributes)
 
     def bind_lbvserver_service(self, lb_name, svc_name, Attributes=None):
         if lb_name not in self.lbvservers:
