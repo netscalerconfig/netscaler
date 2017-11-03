@@ -1,11 +1,18 @@
-
+import socket
 
 class NSObject:
     _locked = False
     _objecttype = 'None'
     def __getitem__(self, name):
-        if name in self.__dict__: return self.__dict__[name]
-        return self.Attributes[name]
+        try:
+            if name == 'Attributes': return self.__dict__['Attributes']
+            if name in self.__dict__: return self.__dict__[name]
+            if name in self.__dict__['Attributes']:
+                return self.__dict__['Attributes'][name]
+            else:
+                raise KeyError, "Attribute {} doesn't exist".format(name)
+        except:
+            raise KeyError, "Attribute {} doesn't exist".format(name)
 
     def __getattr__(self, name):
         return self.__getitem__(name)
@@ -13,7 +20,9 @@ class NSObject:
     def __setitem__(self, name, value):
         if name == '_locked' or not self._locked:
             self.__dict__[name] = value
-        else: self.__dict__['Attributes'][name] = value
+        else:
+            if name in self.__dict__['Attributes']:
+                self.__dict__['Attributes'][name] = value
         return value
 
     def __setattr__(self, name, value):
@@ -29,3 +38,10 @@ class NSObject:
 
     def LocalAttributes():
         return ""
+
+    def is_ip(self, str):
+        try:
+            socket.inet_aton(str)
+            return True
+        except socket.error:
+            return False

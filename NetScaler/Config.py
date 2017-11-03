@@ -3,29 +3,44 @@ from Service import Service
 from ServiceGroup import ServiceGroup
 from LBvServer import LBvServer
 from CSvServer import CSvServer
+from VPNvServer import VPNvServer
 from CSAction import CSAction
-from CSPolicy import CSPolicy
+from LDAPAction import LDAPAction
+from RadiusAction import RadiusAction
+from TacacsAction import TacacsAction
+from CertAction import CertAction
+from Policy import Policy
 from Bind import Bind
 import socket
 
 class Config:
     def __init__(self):
+        self._version = '12.0'
         self.servers = {}
         self.services = {}
         self.servicegroups = {}
         self.lbvservers = {}
         self.csvservers = {}
+        self.vpnvservers = {}
         self.csactions = {}
         self.cspolicies = {}
         self.vservernames = {}
         self.vsipport_tuples = {}
         self.svcipport_tuples = {}
         self.serverips = {}
+        self.ldapactions = {}
+        self.radiusactions = {}
+        self.tacacsactions = {}
+        self.certactions = {}
+        self.certpolicies = {}
+        self.tacacspolicies = {}
+        self.radiuspolicies = {}
+        self.ldappolicies = {}
 
     def add_lb_vserver(self, name, servicetype, IPAddress, port, Attributes=None):
         ipport_tuple = str(IPAddress) + str(port)
 
-        if name in self.lbvservers or name in self.vservernames: 
+        if name in self.vservernames: 
             raise KeyError, "Duplicate name of virtual server"
         if ipport_tuple in self.vsipport_tuples: 
             raise KeyError, "IP and Port already in use"
@@ -38,13 +53,26 @@ class Config:
     def add_cs_vserver(self, name, servicetype, IPAddress, port, Attributes=None):
         ipport_tuple = str(IPAddress) + str(port)
 
-        if name in self.csvservers or name in self.vservernames: 
+        if name in self.vservernames: 
             raise KeyError, "Duplicate name of virtual server"
         if ipport_tuple in self.vsipport_tuples: 
             raise KeyError, "IP and Port already in use"
 
         self.csvservers[name] = CSvServer(name, servicetype, IPAddress, port, Attributes)
         self.vsipport_tuples[ipport_tuple] = 1
+        self.vservernames[name] = 1
+
+    def add_vpn_vserver(self, name, servicetype, IPAddress, port, Attributes=None):
+        ipport_tuple = str(IPAddress) + str(port)
+
+        if name in self.vservernames: 
+            raise KeyError, "Duplicate name of virtual server"
+        if ipport_tuple in self.vsipport_tuples: 
+            raise KeyError, "IP and Port already in use"
+
+        self.vpnvservers[name] = VPNvServer(name, servicetype, IPAddress, port, Attributes)
+        if IPAddress != '0.0.0.0' and str(port) != '0':
+            self.vsipport_tuples[ipport_tuple] = 1
         self.vservernames[name] = 1
 
     def add_server(self, name, IPAddress, Attributes=None):
@@ -96,7 +124,7 @@ class Config:
             raise KeyError, "Too few arguments"
         if 'action' in Attributes and Attributes['action'] not in self.csactions:
             raise KeyError, "Action doesn't exist"
-        self.cspolicies[name] = CSPolicy(name, Attributes)
+        self.cspolicies[name] = Policy(name, 'cspolicy', Attributes)
 
     def bind_lbvserver_service(self, lb_name, svc_name, Attributes=None):
         if lb_name not in self.lbvservers:
@@ -155,8 +183,80 @@ class Config:
         self.csvservers[cs_name].csp_bind[Attributes['priority']] = \
             Bind(self.csvservers[cs_name], self.cspolicies[cspol_name], 'csp', Attributes)
 
+    def add_auth_ldapaction(self, name, server, Attributes=None):
+        if name in self.ldapactions:
+            raise KeyError, "Dumplicate name of ldapAction"
+
+        self.ldapactions[name] = LDAPAction(name, server, Attributes)
+
+    def add_auth_radiusaction(self, name, server, radkey, Attributes=None):
+        if name in self.radiusactions:
+            raise KeyError, "Dumplicate name of radiusAction"
+
+        self.radiusactions[name] = RadiusAction(name, server, radkey, Attributes)
+
+    def add_auth_tacacsaction(self, name, server, tacacssecret, Attributes=None):
+        if name in self.tacacsactions:
+            raise KeyError, "Dumplicate name of tacacsAction"
+
+        self.tacacsactions[name] = TacacsAction(name, server, tacacssecret, Attributes)
+
+    def add_auth_certaction(self, name, Attributes=None):
+        if name in self.certactions:
+            raise KeyError, "Dumplicate name of certAction"
+
+        self.certactions[name] = CertAction(name, Attributes, self._version)
+
+    def add_auth_certpolicy(self, name, Attributes=None):
+        if 'rule' not in Attributes:
+            raise KeyError, "Rule is required"
+        if 'action' not in Attributes:
+            raise KeyError, "Action is required"
+        if Attributes['action'] not in self.certactions:
+            raise KeyError, "Action doesn't exist"
+
+        self.certpolicies[name] = Policy(name, 'certpolicy', Attributes, self._version)
+
+    def add_auth_tacacspolicy(self, name, Attributes=None):
+        if 'rule' not in Attributes:
+            raise KeyError, "Rule is required"
+        if 'action' not in Attributes:
+            raise KeyError, "Action is required"
+        if Attributes['action'] not in self.tacacsactions:
+            raise KeyError, "Action doesn't exist"
+
+        self.tacacspolicies[name] = Policy(name, 'tacacspolicy', Attributes, self._version)
+
+    def add_auth_radiuspolicy(self, name, Attributes=None):
+        if 'rule' not in Attributes:
+            raise KeyError, "Rule is required"
+        if 'action' not in Attributes:
+            raise KeyError, "Action is required"
+        if Attributes['action'] not in self.radiusactions:
+            raise KeyError, "Action doesn't exist"
+
+        self.radiuspolicies[name] = Policy(name, 'radiuspolicy', Attributes, self._version)
+
+    def add_auth_ldappolicy(self, name, Attributes=None):
+        if 'rule' not in Attributes:
+            raise KeyError, "Rule is required"
+        if 'action' not in Attributes:
+            raise KeyError, "Action is required"
+        if Attributes['action'] not in self.ldapactions:
+            raise KeyError, "Action doesn't exist"
+
+        self.ldappolicies[name] = Policy(name, 'ldappolicy', Attributes, self._version)
+
     def __str__(self):
         out = ""
+        for x in self.ldapactions: out += str(self.ldapactions[x]) + '\n'
+        for x in self.radiusactions: out += str(self.radiusactions[x]) + '\n'
+        for x in self.tacacsactions: out += str(self.tacacsactions[x]) + '\n'
+        for x in self.certactions: out += str(self.certactions[x]) + '\n'
+        for x in self.certpolicies: out += str(self.certpolicies[x]) + '\n'
+        for x in self.tacacspolicies: out += str(self.tacacspolicies[x]) + '\n'
+        for x in self.radiuspolicies: out += str(self.radiuspolicies[x]) + '\n'
+        for x in self.ldappolicies: out += str(self.ldappolicies[x]) + '\n'
         for x in self.servers: out += str(self.servers[x]) + '\n'
         for x in self.services: out += str(self.services[x]) + '\n'
         for x in self.servicegroups: out += str(self.servicegroups[x]) + '\n'
@@ -164,7 +264,7 @@ class Config:
         for x in self.csactions: out += str(self.csactions[x]) + '\n'
         for x in self.cspolicies: out += str(self.cspolicies[x]) + '\n'
         for x in self.csvservers: out += str(self.csvservers[x]) + '\n'
-
+        for x in self.vpnvservers: out += str(self.vpnvservers[x]) + '\n'
         return out
 
     def is_ip(self, str):
