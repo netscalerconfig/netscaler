@@ -156,6 +156,42 @@ _nsconfig = NetScaler.NewConfig()_
         * tcpProfileName
         * td
 
+* _NetScaler.add_vpn_vserver(self, name, servicetype, IPAddress, port, Attributes)_
+
+    Will create a VPN vServer of type "servicetype" using IPAddress and Port. ServiceType must be 'SSL'. Please refer to NetScaler documentation. This library will check that the IPAddress and port tuple is not used in the same config before. If so, it will generate an exception.
+    The accepted attributes are based on NetScaler firmware version 12.0. Attributes accepted must be of the form of a Dictionary and the keys are case sensitive. For documentation of each attribute please use NetScaler documentation. The list of accepted keys is:
+
+        * appflowLog
+        * authentication
+        * authnProfile
+        * cginfraHomePageRedirect
+        * comment
+        * deploymentType
+        * deviceCert
+        * doubleHop
+        * downStateFlush
+        * dtls
+        * httpProfileName
+        * icaOnly
+        * icaProxySessionMigration
+        * icmpVsrResponse
+        * l2Conn
+        * LinuxEPAPluginUpgrade
+        * Listenpolicy
+        * loginOnce
+        * logoutOnSmartcardRemoval
+        * MacEPAPluginUpgrade
+        * maxAAAUsers
+        * maxLoginAttempts
+        * netProfile
+        * pcoipVserverProfileName
+        * rdpServerProfileName
+        * RHIstate
+        * state
+        * tcpProfileName
+        * vserverFqdn
+        * WindowsEPAPluginUpgrade
+
 * _NetScaler.add_server(name, IPAddress, Attributes)_
 
     Will create a server. Checks of duplicate IP addresses will be done before registering the object in the config.
@@ -296,4 +332,150 @@ _nsconfig = NetScaler.NewConfig()_
         * priority
         * gotoPriorityExpression
         * invoke
+
+* _NetScaler.add_auth_ldapaction(self, name, server, Attributes)_
+
+    Will create an LDAP authentication server. Library will check for duplicate names and if so, it will generate an exception.
+    The accepted attributes are based on NetScaler firmware version 12.0. Attributes accepted must be of the form of a Dictionary and the keys are case sensitive. For documentation of each attribute please use NetScaler documentation. The list of accepted keys is:
+
+        * Attribute1
+        * Attribute10
+        * Attribute11
+        * Attribute12
+        * Attribute13
+        * Attribute14
+        * Attribute15
+        * Attribute16
+        * Attribute2
+        * Attribute3
+        * Attribute4
+        * Attribute5
+        * Attribute6
+        * Attribute7
+        * Attribute8
+        * Attribute9
+        * authentication
+        * authTimeout
+        * defaultAuthenticationGroup
+        * followReferrals
+        * maxLDAPReferrals
+        * groupAttrName
+        * groupNameIdentifier
+        * groupSearchAttribute
+        * ldapBase
+        * ldapBindDn
+        * ldapHostname
+        * ldapLoginName
+        * nestedGroupExtraction
+        * maxNestingLevel
+        * groupSearchSubAttribute
+        * groupSearchFilter
+        * OTPSecret
+        * passwdChange
+        * referralDNSLookup
+        * msSRVRecordlocation
+        * requireUser
+        * searchFilter
+        * secType
+        * serverPort
+        * ssoNameAttribute
+        * subAttributeName
+        * svrType
+        * validateServerCert
+
+* _NetScaler.add_auth_radiusaction(self, name, server, radkey, Attributes=None)_
+
+    Will create an RADIUS authentication server. Library will check for duplicate names and if so, it will generate an exception.
+    The accepted attributes are based on NetScaler firmware version 12.0. Attributes accepted must be of the form of a Dictionary and the keys are case sensitive. For documentation of each attribute please use NetScaler documentation. The list of accepted keys is:
+
+        * accounting
+        * authentication
+        * authservRetry
+        * authTimeout
+        * callingstationid
+        * defaultAuthenticationGroup
+        * ipAttributeType
+        * ipVendorID
+        * passEncoding
+        * pwdAttributeType
+        * pwdVendorID
+        * radAttributeType
+        * radGroupSeparator
+        * radGroupsPrefix
+        * radNASid
+        * radNASip
+        * radVendorID
+        * serverPort
+
+* _NetScaler.add_auth_tacacsaction(self, name, server, tacacssecret, Attributes=None)_
+
+    Will create an TACACS authentication server. Library will check for duplicate names and if so, it will generate an exception.
+    The accepted attributes are based on NetScaler firmware version 12.0. Attributes accepted must be of the form of a Dictionary and the keys are case sensitive. For documentation of each attribute please use NetScaler documentation. The list of accepted keys is:
+
+        * accounting
+        * Attribute1
+        * Attribute10
+        * Attribute11
+        * Attribute12
+        * Attribute13
+        * Attribute14
+        * Attribute15
+        * Attribute16
+        * Attribute2
+        * Attribute3
+        * Attribute4
+        * Attribute5
+        * Attribute6
+        * Attribute7
+        * Attribute8
+        * Attribute9
+        * auditFailedCmds
+        * authorization
+        * authTimeout
+        * defaultAuthenticationGroup
+        * groupAttrName
+        * serverPort
+
+* _NetScaler.add_auth_certaction(self, name, Attributes=None)_
+
+    Will create an Certificate authentication server. Library will check for duplicate names and if so, it will generate an exception.
+    The accepted attributes are based on NetScaler firmware version 12.0. Attributes accepted must be of the form of a Dictionary and the keys are case sensitive. For documentation of each attribute please use NetScaler documentation. The list of accepted keys is:
+
+        * defaultAuthenticationGroup
+        * groupNameField
+        * twoFactor
+        * userNameField
+
+* _NetScaler.add_auth_certpolicy(self, name, Attributes=None)_
+
+    Will create a cert authentication policy. Name duplicates will generate an exception. The 'action' and 'rule' attribute are mandatory. This library has been created with "Advanced Expressions" in mind.
+    The accepted attributes are based on NetScaler firmware version 12.0. Attributes accepted must be of the form of a Dictionary and the keys are case sensitive. For documentation of each attribute please use NetScaler documentation. The list of accepted keys is:
+
+        * rule
+        * action
+
+* _NetScaler.add_auth_tacacspolicy(self, name, Attributes=None)_
+
+    Will create a TACACS authentication policy. Name duplicates will generate an exception. The 'action' and 'rule' attribute are mandatory. This library has been created with "Advanced Expressions" in mind.
+    The accepted attributes are based on NetScaler firmware version 12.0. Attributes accepted must be of the form of a Dictionary and the keys are case sensitive. For documentation of each attribute please use NetScaler documentation. The list of accepted keys is:
+
+        * rule
+        * action
+
+* _NetScaler.add_auth_radiuspolicy(self, name, Attributes=None)_
+
+    Will create a RADIUS authentication policy. Name duplicates will generate an exception. The 'action' and 'rule' attribute are mandatory. This library has been created with "Advanced Expressions" in mind.
+    The accepted attributes are based on NetScaler firmware version 12.0. Attributes accepted must be of the form of a Dictionary and the keys are case sensitive. For documentation of each attribute please use NetScaler documentation. The list of accepted keys is:
+
+        * rule
+        * action
+
+* _NetScaler.add_auth_ldappolicy(self, name, Attributes=None)_
+
+    Will create a LDAP authentication policy. Name duplicates will generate an exception. The 'action' and 'rule' attribute are mandatory. This library has been created with "Advanced Expressions" in mind.
+    The accepted attributes are based on NetScaler firmware version 12.0. Attributes accepted must be of the form of a Dictionary and the keys are case sensitive. For documentation of each attribute please use NetScaler documentation. The list of accepted keys is:
+
+        * rule
+        * action
+
 
