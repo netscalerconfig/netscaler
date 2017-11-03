@@ -3,7 +3,7 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-import NetScaler.CSPolicy as CSPolicy
+import NetScaler.Policy as Policy
 import unittest
 
 class TestAttribute(unittest.TestCase):
@@ -12,14 +12,14 @@ class TestAttribute(unittest.TestCase):
         cspname = 'cspctname'
         expectedout = 'add cs policy {} '.format(cspname)
 
-        orig = CSPolicy(cspname)
+        orig = Policy(cspname, 'cspolicy')
         self.assertEqual(str(orig), expectedout)
 
     def test_02_Advanced(self):
         cspname = 'cspctname'
         expectedout = 'add cs policy {} '.format(cspname)
 
-        orig = CSPolicy(cspname, {
+        orig = Policy(cspname, 'cspolicy', {
                 "domain": "asdf",
                 "logAction": "asdf",
                 "url": "asdf",
@@ -36,7 +36,7 @@ class TestAttribute(unittest.TestCase):
         cspname = 'cspctname'
         expectedout = 'add cs policy {} '.format(cspname)
 
-        orig = CSPolicy(cspname, {
+        orig = Policy(cspname, 'cspolicy', {
                 "domain": "asdf",
                 "logAction": "asdf",
                 "url": "asdf",
