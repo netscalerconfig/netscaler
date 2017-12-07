@@ -1,5 +1,5 @@
-from AttributeList import AttributeList
-from NSObject import NSObject
+from .AttributeList import AttributeList
+from .NSObject import NSObject
 import json
 
 # Types of target:
@@ -66,9 +66,9 @@ class Bind(NSObject):
             }
         }
         if version not in attrs:
-            raise KeyError, "Invalid version."
+            raise KeyError ("Invalid version.")
         if self.targetType not in attrs[version]:
-            raise KeyError, "Bind type not identified."
+            raise KeyError ("Bind type not identified.")
 
         self.__dict__['Attributes'] = AttributeList(attrs[version][self.targetType])
 

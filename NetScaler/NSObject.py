@@ -10,9 +10,9 @@ class NSObject:
             if name in self.__dict__['Attributes']:
                 return self.__dict__['Attributes'][name]
             else:
-                raise KeyError, "Attribute {} doesn't exist".format(name)
+                raise KeyError("Attribute {} doesn't exist".format(name))
         except:
-            raise KeyError, "Attribute {} doesn't exist".format(name)
+            raise KeyError("Attribute {} doesn't exist".format(name))
 
     def __getattr__(self, name):
         return self.__getitem__(name)

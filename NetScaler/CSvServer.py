@@ -1,11 +1,11 @@
-from AttributeList import AttributeList
-from NSObject import NSObject
+from .AttributeList import AttributeList
+from .NSObject import NSObject
 import json
 
 class CSvServer(NSObject):
     def __init__(self, name, servicetype, IPAddress, port, Attributes=None):
         self.InitVersion("12.0")
-        self._objecttype = "csvserver"
+        self._objecttype = "cs vserver"
         self.name = name
         self.servicetype = servicetype
         self.ipaddress = IPAddress

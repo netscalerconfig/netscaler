@@ -23,7 +23,7 @@ class Attribute:
                 self.__dict__['changed'] = (value != self.__dict__['default_value'])
             elif name == 'quoted': self.quoted = value
             else:
-                raise AttributeError, "Attribute does not allow assignment to .{} member".format(name)
+                raise AttributeError("Attribute does not allow assignment to .{} member".format(name))
         self.__dict__[name] = value
 
     def __str__(self):

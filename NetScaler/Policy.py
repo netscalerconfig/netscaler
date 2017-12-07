@@ -1,5 +1,5 @@
-from AttributeList import AttributeList
-from NSObject import NSObject
+from .AttributeList import AttributeList
+from .NSObject import NSObject
 import json
 
 class Policy(NSObject):
@@ -14,7 +14,7 @@ class Policy(NSObject):
                         "rule": "",
                         "action": ""
                     },
-                    'quoted': [ 'action', 'rule' ],
+                    'quoted': [ "rule" ],
                     'policytype': 'cs policy'
                 },
                 'certpolicy': {
@@ -56,7 +56,7 @@ class Policy(NSObject):
         else:
             self._version = version
         if poltype not in self.attr[self._version]:
-            raise KeyError, "Policy type {} not implemented".format(poltype)
+            raise KeyError("Policy type {} not implemented".format(poltype))
         self._objecttype = poltype
         self.InitVersion()
         self.name = name

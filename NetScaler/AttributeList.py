@@ -1,14 +1,14 @@
 import json
-import Attribute
+from . import Attribute
 
 class AttributeList:
     def __init__(self, attributes):
         if isinstance(attributes, dict):
             self._list = {}
             for key in attributes:
-                self._list[key] = Attribute.Attribute(key, attributes[key])
+                self._list[key] = Attribute(key, attributes[key])
         else:
-            raise AttributeError, "Cannot initialize an attribute list without attributes"
+            raise AttributeError("Cannot initialize an attribute list without attributes")
 
     def setquote(self, key, q):
         self[key].quoted(q)
@@ -25,12 +25,12 @@ class AttributeList:
 
     def __setitem__(self, name, value):
         if name not in self._list:
-            raise AttributeError, "Attribute {} doesn't exist".format(name)
+            raise AttributeError("Attribute {} doesn't exist".format(name))
         self._list[name].val = value
 
     def __getitem__(self, name):
         if name not in self._list:
-            raise AttributeError, "Attribute {} doesn't exist".format(name)
+            raise AttributeError("Attribute {} doesn't exist".format(name))
         return self._list[name]
 
     def __repr__(self):

@@ -1,5 +1,5 @@
-from AttributeList import AttributeList
-from NSObject import NSObject
+from .AttributeList import AttributeList
+from .NSObject import NSObject
 import json
 
 class CSAction(NSObject):
