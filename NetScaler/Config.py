@@ -57,11 +57,12 @@ class Config:
         if name in self.vservernames: 
             raise KeyError("Duplicate name of virtual server")
         if ipport_tuple in self.vsipport_tuples: 
-            raise KeyError("IP and Port already in use")
+            return self.vsipport_tuples[ipport_tuple]
 
         self.csvservers[name] = CSvServer(name, servicetype, IPAddress, port, Attributes)
-        self.vsipport_tuples[ipport_tuple] = 1
-        self.vservernames[name] = 1
+        self.vsipport_tuples[ipport_tuple] = name
+        self.vservernames[name] = ipport_tuple
+        return name
 
     def add_vpn_vserver(self, name, servicetype, IPAddress, port, Attributes=None):
         ipport_tuple = str(IPAddress) + str(port)
