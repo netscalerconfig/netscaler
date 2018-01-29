@@ -14,6 +14,7 @@ class CSvServer(NSObject):
         self.csp_bind = {} # service and service groups
         self.rsp_bind = {}
         self.rwp_bind = {}
+        self.comment_list = []
         if Attributes is not None:
             for x in Attributes:
                 self.Attributes[x] = Attributes[x]
@@ -88,7 +89,13 @@ class CSvServer(NSObject):
         self.__dict__['csdefault'] = vs
 
     def __str__(self):
-        outstring = "add cs vserver " + self.name + " " + self.servicetype + " " + \
+        outstring = ""
+        if len(self.comment_list) > 0:
+            outstring += '\n##### the following cs vserver has comments'
+            for x in self.comment_list:
+                outstring += '\n# ' + x
+            outstring += '\n'
+        outstring += "add cs vserver " + self.name + " " + self.servicetype + " " + \
             self.ipaddress + " " + str(self.port) + " " + str(self.Attributes)
         if self.csdefault is not None:
             outstring += '\n' + str(self.csdefault)

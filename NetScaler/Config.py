@@ -37,6 +37,7 @@ class Config:
         self.tacacspolicies = {}
         self.radiuspolicies = {}
         self.ldappolicies = {}
+        self.comment_list = []
 
     def add_lb_vserver(self, name, servicetype, IPAddress, port, Attributes=None):
         ipport_tuple = str(IPAddress) + str(port)
@@ -120,7 +121,7 @@ class Config:
             raise KeyError("Duplicate name of cs action")
         if Attributes is not None and 'targetLBVserver' in Attributes:
             if Attributes['targetLBVserver'] not in self.lbvservers:
-                raise KeyError("Target LB vServer doesn't exist")
+                raise KeyError("Target LB vServer {} doesn't exist".format(Attributes['targetLBVserver']))
 
         self.csactions[name] = CSAction(name, Attributes)
 
@@ -257,6 +258,12 @@ class Config:
 
     def __str__(self):
         out = ""
+        if len(self.comment_list) > 0:
+            out += "# Global settings need to be configured manually"
+            for x in self.comment_list:
+                out += '\n# {}'.format(x)
+            out += '\n\n'
+
         for x in self.ldapactions: out += str(self.ldapactions[x]) + '\n'
         for x in self.radiusactions: out += str(self.radiusactions[x]) + '\n'
         for x in self.tacacsactions: out += str(self.tacacsactions[x]) + '\n'
