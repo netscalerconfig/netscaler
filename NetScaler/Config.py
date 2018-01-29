@@ -43,9 +43,9 @@ class Config:
         ipport_tuple = str(IPAddress) + str(port)
 
         if name in self.vservernames: 
-            raise KeyError("Duplicate name of virtual server")
+            raise KeyError("Duplicate name {} of lb virtual server".format(name))
         if ipport_tuple in self.vsipport_tuples: 
-            raise KeyError("IP and Port already in use")
+            raise KeyError("IP and Port already in use in lb virtual server {}".format(name))
 
         self.lbvservers[name] = LBvServer(name, servicetype, IPAddress, port, Attributes)
         if IPAddress != '0.0.0.0' and str(port) != '0':
@@ -56,7 +56,7 @@ class Config:
         ipport_tuple = str(IPAddress) + str(port)
 
         if name in self.vservernames: 
-            raise KeyError("Duplicate name of virtual server")
+            raise KeyError("Duplicate name {} of cs virtual server".format(name))
         if ipport_tuple in self.vsipport_tuples: 
             return self.vsipport_tuples[ipport_tuple]
 
@@ -69,9 +69,9 @@ class Config:
         ipport_tuple = str(IPAddress) + str(port)
 
         if name in self.vservernames: 
-            raise KeyError("Duplicate name of virtual server")
-        if ipport_tuple in self.vsipport_tuples: 
-            raise KeyError("IP and Port already in use")
+            raise KeyError("Duplicate name {} of vpn virtual server".format(name))
+        if ipport_tuple in self.vsipport_tuples:
+            raise KeyError("IP and Port already in use in lb virtual server {}".format(name))
 
         self.vpnvservers[name] = VPNvServer(name, servicetype, IPAddress, port, Attributes)
         if IPAddress != '0.0.0.0' and str(port) != '0':
@@ -100,25 +100,25 @@ class Config:
             self.servers[server] = Server(server, server)
 
         if serverisip and server not in self.servers and server in self.serverips:
-            raise KeyError("IP already defined in a server")
+            raise KeyError("IP {} already defined in a server".format(server))
         if not serverisip and server not in self.servers:
-            raise KeyError("Server not defined")
+            raise KeyError("Server {} not defined".format(name))
         if name in self.services or name in self.servicegroups:
-            raise KeyError("Duplicate name of service")
+            raise KeyError("Duplicate name {} of service".format(name))
         if ipport_tuple in self.svcipport_tuples:
-            raise KeyError("IP and Port already in use")
+            raise KeyError("IP and Port {} already in use".format(ipport_tuple))
 
         self.services[name] = Service(name, server, servicetype, port, Attributes)
         self.svcipport_tuples[ipport_tuple] = 1
 
     def add_servicegroup(self, name, servicetype, Attributes=None):
         if name in self.servicegroups or name in self.services:
-            raise KeyError("Duplicate name of service")
+            raise KeyError("Duplicate name of service {}".format(name))
         self.servicegroups[name] = ServiceGroup(name, servicetype, Attributes)
 
     def add_cs_action(self, name, Attributes=None):
         if name in self.csactions:
-            raise KeyError("Duplicate name of cs action")
+            raise KeyError("Duplicate name of cs action {}".format(name))
         if Attributes is not None and 'targetLBVserver' in Attributes:
             if Attributes['targetLBVserver'] not in self.lbvservers:
                 raise KeyError("Target LB vServer {} doesn't exist".format(Attributes['targetLBVserver']))
@@ -127,31 +127,31 @@ class Config:
 
     def add_cs_policy(self, name, Attributes=None):
         if name in self.cspolicies:
-            raise KeyError("Duplicate name of cs policy")
+            raise KeyError("Duplicate name of cs policy {}".format(name))
         if 'domain' not in Attributes and 'url' not in Attributes and 'rule' not in Attributes:
-            raise KeyError("Too few arguments")
+            raise KeyError("Too few arguments at policy {}".format(name))
         if 'action' in Attributes and Attributes['action'] not in self.csactions:
-            raise KeyError("Action doesn't exist")
+            raise KeyError("Action {} doesn't exist".format(name))
         self.cspolicies[name] = Policy(name, 'cspolicy', Attributes)
 
     def bind_lbvserver_service(self, lb_name, svc_name, Attributes=None):
         if lb_name not in self.lbvservers:
-            raise KeyError("Load Balancing vServer doesn't exist")
+            raise KeyError("Load Balancing vServer {} doesn't exist".format(lb_name))
         if svc_name not in self.services:
-            raise KeyError("Service doesn't exist")
+            raise KeyError("Service {} doesn't exist".format(svc_name))
         if svc_name in self.lbvservers[lb_name].svc_bind:
-            raise KeyError("Service already bound")
+            raise KeyError("Service {} already bound to {}".format(svc_name, lb_name))
 
         self.lbvservers[lb_name].svc_bind[svc_name] = \
             Bind(self.lbvservers[lb_name], self.services[svc_name], 'lsv', Attributes)
 
     def bind_lbvserver_servicegroup(self, lb_name, sg_name, Attributes=None):
         if lb_name not in self.lbvservers:
-            raise KeyError("Load Balancing vServer doesn't exist")
+            raise KeyError("Load Balancing vServer {} doesn't exist".format(lb_name))
         if sg_name not in self.servicegroups:
-            raise KeyError("ServiceGroup doesn't exist")
+            raise KeyError("ServiceGroup {} doesn't exist".format(sg_name))
         if sg_name in self.lbvservers[lb_name].svc_bind:
-            raise KeyError("ServiceGroup already bound")
+            raise KeyError("ServiceGroup {} already bound to {}".format(sg_name, lb_name))
 
         self.lbvservers[lb_name].svc_bind[sg_name] = \
             Bind(self.lbvservers[lb_name], self.servicegroups[sg_name], 'lsv', Attributes)
@@ -159,100 +159,100 @@ class Config:
     def bind_servicegroup_server(self, sg_name, srv_name, port, Attributes=None):
         serverisip = self.is_ip(srv_name)
         if sg_name not in self.servicegroups:
-            raise KeyError("ServiceGroup doesn't exist")
+            raise KeyError("ServiceGroup {} doesn't exist".format(sg_name))
         if serverisip:
             if srv_name not in self.serverips:
                 self.add_server(srv_name, srv_name)
             elif srv_name not in self.servers:
-                raise KeyError("Server already exists with a name")
+                raise KeyError("Server {} already exists with a name".format(srv_name))
         else:
             if srv_name not in self.servers:
-                raise KeyError("Server doesn't exist")
+                raise KeyError("Server {} doesn't exist".format(srv_name))
         srv_key = srv_name + '_' + port
         self.servicegroups[sg_name].server_bind[srv_key] = \
             Bind(self.servicegroups[sg_name], self.servers[srv_name], 'sgs', Attributes, port)
 
     def bind_cs_lbvserver(self, cs_name, lb_name, Attributes=None):
         if cs_name not in self.csvservers:
-            raise KeyError("Content Swith vServer doesn't exist")
+            raise KeyError("Content Switch vServer {} doesn't exist".format(cs_name))
         if lb_name not in self.lbvservers:
-            raise KeyError("LB vServer doesn't exist")
+            raise KeyError("LB vServer {} doesn't exist".format(lb_name))
 
         self.csvservers[cs_name].setCSDefault( \
             Bind(self.csvservers[cs_name], self.lbvservers[lb_name], 'clb', Attributes))
 
     def bind_cs_cspolicy(self, cs_name, cspol_name, Attributes=None):
         if cs_name not in self.csvservers:
-            raise KeyError("Content Swith vServer doesn't exist")
+            raise KeyError("Content Swith vServer {} doesn't exist".format(cs_name))
         if cspol_name not in self.cspolicies:
-            raise KeyError("CS Policy doesn't exist")
+            raise KeyError("CS Policy {} doesn't exist".format(cspol_name))
         if 'priority' not in Attributes:
-            raise KeyError("Priority is mandatory for advanced expressions")
+            raise KeyError("Priority is mandatory for advanced expressions in cs {}, pol {}".format(cs_name, cspol_name))
 
         self.csvservers[cs_name].csp_bind[Attributes['priority']] = \
             Bind(self.csvservers[cs_name], self.cspolicies[cspol_name], 'csp', Attributes)
 
     def add_auth_ldapaction(self, name, server, Attributes=None):
         if name in self.ldapactions:
-            raise KeyError("Dumplicate name of ldapAction")
+            raise KeyError("Dumplicate name {} of ldapAction".format(name))
 
         self.ldapactions[name] = LDAPAction(name, server, Attributes)
 
     def add_auth_radiusaction(self, name, server, radkey, Attributes=None):
         if name in self.radiusactions:
-            raise KeyError("Dumplicate name of radiusAction")
+            raise KeyError("Dumplicate name {} of radiusAction".format(name))
 
         self.radiusactions[name] = RadiusAction(name, server, radkey, Attributes)
 
     def add_auth_tacacsaction(self, name, server, tacacssecret, Attributes=None):
         if name in self.tacacsactions:
-            raise KeyError("Dumplicate name of tacacsAction")
+            raise KeyError("Dumplicate name {} of tacacsAction".format(name))
 
         self.tacacsactions[name] = TacacsAction(name, server, tacacssecret, Attributes)
 
     def add_auth_certaction(self, name, Attributes=None):
         if name in self.certactions:
-            raise KeyError("Dumplicate name of certAction")
+            raise KeyError("Dumplicate name {} of certAction".format(name))
 
         self.certactions[name] = CertAction(name, Attributes, self._version)
 
     def add_auth_certpolicy(self, name, Attributes=None):
         if 'rule' not in Attributes:
-            raise KeyError("Rule is required")
+            raise KeyError("Rule is required in policy {}".format(name))
         if 'action' not in Attributes:
-            raise KeyError("Action is required")
+            raise KeyError("Action is required in policy {}".format(name))
         if Attributes['action'] not in self.certactions:
-            raise KeyError("Action doesn't exist")
+            raise KeyError("Action {} doesn't exist".format(Attributes['action']))
 
         self.certpolicies[name] = Policy(name, 'certpolicy', Attributes, self._version)
 
     def add_auth_tacacspolicy(self, name, Attributes=None):
         if 'rule' not in Attributes:
-            raise KeyError("Rule is required")
+            raise KeyError("Rule is required in policy {}".format(name))
         if 'action' not in Attributes:
-            raise KeyError("Action is required")
+            raise KeyError("Action is required in policy {}".format(name))
         if Attributes['action'] not in self.tacacsactions:
-            raise KeyError("Action doesn't exist")
+            raise KeyError("Action {} doesn't exist".format(Attributes['action']))
 
         self.tacacspolicies[name] = Policy(name, 'tacacspolicy', Attributes, self._version)
 
     def add_auth_radiuspolicy(self, name, Attributes=None):
         if 'rule' not in Attributes:
-            raise KeyError("Rule is required")
+            raise KeyError("Rule is required in policy {}".format(name))
         if 'action' not in Attributes:
-            raise KeyError("Action is required")
+            raise KeyError("Action is required in policy {}".format(name))
         if Attributes['action'] not in self.radiusactions:
-            raise KeyError("Action doesn't exist")
+            raise KeyError("Action {} doesn't exist".format(Attributes['action']))
 
         self.radiuspolicies[name] = Policy(name, 'radiuspolicy', Attributes, self._version)
 
     def add_auth_ldappolicy(self, name, Attributes=None):
         if 'rule' not in Attributes:
-            raise KeyError("Rule is required")
+            raise KeyError("Rule is required in policy {}".format(name))
         if 'action' not in Attributes:
-            raise KeyError("Action is required")
+            raise KeyError("Action is required in policy {}".format(name))
         if Attributes['action'] not in self.ldapactions:
-            raise KeyError("Action doesn't exist")
+            raise KeyError("Action {} doesn't exist".format(Attributes['action']))
 
         self.ldappolicies[name] = Policy(name, 'ldappolicy', Attributes, self._version)
 
